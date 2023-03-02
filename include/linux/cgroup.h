@@ -50,13 +50,13 @@ struct kernel_clone_args;
 
 /* a css_task_iter should be treated as an opaque object */
 struct css_task_iter {
-	struct cgroup_subsys		*ss;
-	unsigned int			flags;
+	struct cgroup_subsys		*ss; // subsystem 
+	unsigned int			flags; //setting up flags
 
-	struct list_head		*cset_pos;
-	struct list_head		*cset_head;
+	struct list_head		*cset_pos; //postion 
+	struct list_head		*cset_head; //head
 
-	struct list_head		*tcset_pos;
+	struct list_head		*tcset_pos; 
 	struct list_head		*tcset_head;
 
 	struct list_head		*task_pos;
@@ -68,9 +68,9 @@ struct css_task_iter {
 	struct list_head		iters_node;	/* css_set->task_iters */
 };
 
-extern struct file_system_type cgroup_fs_type;
-extern struct cgroup_root cgrp_dfl_root;
-extern struct css_set init_css_set;
+extern struct file_system_type cgroup_fs_type; //change group filesystem type 
+extern struct cgroup_root cgrp_dfl_root; // change group root 
+extern struct css_set init_css_set; // init css set
 
 #define SUBSYS(_x) extern struct cgroup_subsys _x ## _cgrp_subsys;
 #include <linux/cgroup_subsys.h>
@@ -93,23 +93,23 @@ extern struct css_set init_css_set;
  * cgroup_subsys_on_dfl - fast test on whether a subsys is on default hierarchy
  * @ss: subsystem in question
  */
-#define cgroup_subsys_on_dfl(ss)						\
+#define cgroup_subsys_on_dfl(ss) 					\
 	static_branch_likely(&ss ## _on_dfl_key)
-
+// subsystem cgroup on default
 bool css_has_online_children(struct cgroup_subsys_state *css);
-struct cgroup_subsys_state *css_from_id(int id, struct cgroup_subsys *ss);
+struct cgroup_subsys_state *css_from_id(int id, struct cgroup_subsys *ss); //takes input argument as id as well as the structure is also passed as th pointer to the subsy
 struct cgroup_subsys_state *cgroup_e_css(struct cgroup *cgroup,
-					 struct cgroup_subsys *ss);
+					 struct cgroup_subsys *ss); // pointer pointing to cgroup as well as the pointer is also pointing to subsys
 struct cgroup_subsys_state *cgroup_get_e_css(struct cgroup *cgroup,
-					     struct cgroup_subsys *ss);
+					     struct cgroup_subsys *ss);// the only difference is here is of get
 struct cgroup_subsys_state *css_tryget_online_from_dir(struct dentry *dentry,
-						       struct cgroup_subsys *ss);
+						       struct cgroup_subsys *ss); // ppointer points to the dentry 
 
-struct cgroup *cgroup_get_from_path(const char *path);
-struct cgroup *cgroup_get_from_fd(int fd);
-struct cgroup *cgroup_v1v2_get_from_fd(int fd);
+struct cgroup *cgroup_get_from_path(const char *path); //character pointer pointing to the path 
+struct cgroup *cgroup_get_from_fd(int fd); //file descriptor  
+struct cgroup *cgroup_v1v2_get_from_fd(int fd); // file descriptor 
 
-int cgroup_attach_task_all(struct task_struct *from, struct task_struct *);
+int cgroup_attach_task_all(struct task_struct *from, struct task_struct *); 
 int cgroup_transfer_tasks(struct cgroup *to, struct cgroup *from);
 
 int cgroup_add_dfl_cftypes(struct cgroup_subsys *ss, struct cftype *cfts);
